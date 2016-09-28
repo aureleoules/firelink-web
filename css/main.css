@@ -1,0 +1,18 @@
+p.centeredtext {
+    position: absolute;
+    top: 35%;
+    white-space: nowrap;
+    color: #26A69A;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+    font-size: 75px;
+}
+.centerdiv {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+    font-size: 75px;
+}
