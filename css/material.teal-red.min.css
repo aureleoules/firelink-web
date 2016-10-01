@@ -2306,6 +2306,12 @@ ol {
     line-height: 36px;
     vertical-align: middle
 }
+.mdl-button.sign {
+    margin-top: 15px;
+    margin-left: 5px;
+    margin-right: 5px;
+    display: inline
+}
 .mdl-button::-moz-focus-inner {
     border: 0
 }

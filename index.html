@@ -126,6 +126,28 @@
          *  - firebase.auth().onAuthStateChanged: This listener is called when the user is signed in or
          *    out, and that is where we update the UI.
          */
+        function linkReceived() {
+            document.getElementById('loader').style.visibility = "hidden";
+            document.getElementById('mainSpinner').style.visibility = "hidden";
+            document.getElementById('centerDiv').style.visibility = "visible";
+            document.getElementById('signLayout').style.visibility = "hidden";
+
+        }
+
+        function userSignedOut() {
+            document.getElementById('quickstart-sign-in').textContent = 'Sign in with Google';
+            setColor(document.getElementById('quickstart-sign-in'), '#4CAF50')
+            setColor(document.getElementById('SignInBtn'), '#4CAF50')
+
+            // [END_EXCLUDE]
+            document.getElementById('centerDiv').style.visibility = "hidden";
+            document.getElementById('loader').style.visibility = "hidden";
+            document.getElementById('mainSpinner').style.visibility = "hidden";
+            document.getElementById('fragments').style.visibility = "hidden";
+            document.getElementById('signLayout').style.visibility = "visible";
+
+        }
+
         function initApp() {
             // Listening for auth state changes.
             // [START authstatelistener]
@@ -134,16 +156,18 @@
                     // User is signed in.
                     //user.Email //user.uid
                     // [START_EXCLUDE]
-                    document.getElementById('centerDiv').style.visibility = "visible";
+                    document.getElementById('fragments').style.visibility = "visible";
 
                     setUser(user.email, user.uid, user.displayName); //Define User
+                    document.getElementById('mainSpinner').style.visibility = "visible";
 
                     var ref = firebase.database().ref('/users/' + user.uid + '/link');
                     ref.once("value", function(data) {
                         console.log(data.val().url);
                         setURL(data.val().url);
                         document.getElementById('linkfield').value = data.val().url;
-                        document.getElementById('loader').style.visibility = "hidden";
+
+                        linkReceived();
 
 
                     });
@@ -163,18 +187,13 @@
                     });
 
                     document.getElementById('quickstart-sign-in').textContent = 'Sign out';
+                    setColor(document.getElementById('quickstart-sign-in'), '#f44336')
+
                     // [END_EXCLUDE]
                 } else {
                     // User is signed out.
                     // [START_EXCLUDE]
-                    document.getElementById('quickstart-sign-in').textContent = 'Sign in with Google';
-                    // [END_EXCLUDE]
-
-
-                    document.getElementById('centerDiv').style.visibility = "hidden";
-
-
-
+                    userSignedOut();
 
 
                 }
@@ -187,6 +206,8 @@
             document.getElementById('save_url').addEventListener('click', saveURL, false);
 
             document.getElementById('quickstart-sign-in').addEventListener('click', toggleSignIn, false);
+            document.getElementById('SignInBtn').addEventListener('click', toggleSignIn, false);
+
             document.getElementById("linkfield")
                 .addEventListener("keyup", function(event) {
                     event.preventDefault();
@@ -200,6 +221,10 @@
         window.onload = function() {
             initApp();
         };
+
+        function setColor(element, color) {
+            element.style.backgroundColor = color;
+        }
 
         function saveURL() {
             if (isUrl(document.getElementById('linkfield').value) == true) {
@@ -296,70 +321,79 @@
 
 <body>
 
-    <div class="demo-layout-transparent mdl-layout mdl-js-layout">
 
-        <header class="mdl-layout__header mdl-layout__header--transparent">
+
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header
+            mdl-layout--fixed-tabs">
+        <header class="mdl-layout__header">
             <div class="mdl-layout__header-row">
                 <!-- Title -->
-                <span class="mdl-layout-title">FireLink</span>
-                <!-- Add spacer, to align navigation to the right -->
-                <div class="mdl-layout-spacer"></div>
-                <!-- Navigation -->
-                <nav class="mdl-navigation">
-                    <a class="mdl-navigation__link" href="">Home</a>
-                    <a class="mdl-navigation__link" href="">Play Store</a>
-                    <a class="mdl-navigation__link" href="">Contact</a>
-                    <a class="mdl-navigation__link" href="">GitHub</a>
 
-                    <a class="mdl-navigation__link" href="">About</a>
-
-                    <button disabled class="mdl-button mdl-js-button mdl-button--raiseLink:d" id="quickstart-sign-in">Sign in with Google</button>
-                    <div class="mdl-spinner mdl-js-spinner is-active" id="loader"></div>
-
-                </nav>
+                <span class="mdl-layout-title">FireLink &nbsp;</span>
+                <div class="mdl-spinner mdl-js-spinner is-active" id="loader"></div>
 
             </div>
-            <div class="centerdiv" id="centerDiv">
+            <!-- Tabs -->
+            <div class="mdl-layout__tab-bar mdl-js-ripple-effect" id="fragments" style="visibility: hidden">
+                <a href="#fixed-tab-1" class="mdl-layout__tab is-active">My Firelink</a>
+                <a href="#fixed-tab-2" class="mdl-layout__tab">Settings</a>
+                <a href="#fixed-tab-3" class="mdl-layout__tab">About</a>
+            </div>
+        </header>
+        <div class="mdl-layout__drawer">
+            <span class="mdl-layout-title">Menu</span>
 
-                <form action="#" onSubmit="return false;">
+            <nav class="mdl-navigation">
 
-                    <div class="mdl-textfield mdl-js-textfield">
+                <a class="mdl-navigation__link" href="">Home</a>
+                <a class="mdl-navigation__link" href="">Settings</a>
+                <a class="mdl-navigation__link" href="">About</a>
+                <a class="mdl-navigation__link" href="https://github.com/aureleoules/firelink-web">GitHub</a>
+                <button disabled class="mdl-button sign mdl-js-button mdl-button--raiseLink:d" id="quickstart-sign-in">Sign in with Google</button>
+            </nav>
 
-                        <input class="mdl-textfield__input" type="text" id="linkfield" onblur="linkfieldLoseFocus()" placeholder="Enter a link!">
-
-                        <label class="mdl-textfield__label" for="linkfield"></label>
-
-                    </div>
-
-                    <span style="width: 1px; vertical-align: middle;">
-
+        </div>
+        <main class="mdl-layout__content">
+            <section class="mdl-layout__tab-panel is-active" id="fixed-tab-1">
+                <div class="page-content">
+                    <div class="centerdiv" id="centerDiv" style="visibility: hidden">
+                        <form action="#" onSubmit="return false;">
+                            <div class="mdl-textfield mdl-js-textfield">
+                                <input class="mdl-textfield__input" type="text" id="linkfield" onblur="linkfieldLoseFocus()" placeholder="Enter a link!">
+                                <label class="mdl-textfield__label" for="linkfield"></label>
+                            </div>
+                            <span style="width: 1px; vertical-align: middle;">
                         <button type= "button" class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" id="save_url" >
-                            
                             <i class="material-icons">send</i>
                         </button>
                         <button type= "button" class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" id="open_in_new">
                             <i class="material-icons">open_in_new</i>
                         </button>
-                
                     </span>
+                        </form>
+                    </div>
+                </div>
+                <div class="centerdiv" id="signLayout" style="visibility: hidden">
+                    <button class="mdl-button sign mdl-js-button mdl-button--raiseLink:d" id="SignInBtn">Sign In (Google)</button>
+                </div>
+                <div class="loadinglink" id="mainSpinner" style="visibility: hidden">
+                    <p class="loadingtext">Loading Firelink...</p>
+                    <div id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
+                </div>
 
-                </form>
-
-            </div>
-        </header>
-        <div class="mdl-layout__drawer">
-
-            <span class="mdl-layout-title">Menu</span>
-            <nav class="mdl-navigation">
-                <a class="mdl-navigation__link" href="">Home</a>
-                <a class="mdl-navigation__link" href="">Play Store</a>
-                <a class="mdl-navigation__link" href="">Contact</a>
-                <a class="mdl-navigation__link" href="">About</a>
-            </nav>
-
-        </div>
-
-    </div>
+            </section>
+            <section class="mdl-layout__tab-panel" id="fixed-tab-2">
+                <div class="page-content">
+                    <!-- Your content goes here -->
+                </div>
+            </section>
+            <section class="mdl-layout__tab-panel" id="fixed-tab-3">
+                <div class="page-content">
+                    <!-- Your content goes here -->
+                </div>
+            </section>
+        </main>
 </body>
 
 <footer>
