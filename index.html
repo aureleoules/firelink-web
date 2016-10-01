@@ -134,6 +134,8 @@
                     // User is signed in.
                     //user.Email //user.uid
                     // [START_EXCLUDE]
+                    document.getElementById('centerDiv').style.visibility = "visible";
+
                     setUser(user.email, user.uid, user.displayName); //Define User
 
                     var ref = firebase.database().ref('/users/' + user.uid + '/link');
@@ -167,6 +169,14 @@
                     // [START_EXCLUDE]
                     document.getElementById('quickstart-sign-in').textContent = 'Sign in with Google';
                     // [END_EXCLUDE]
+
+
+                    document.getElementById('centerDiv').style.visibility = "hidden";
+
+
+
+
+
                 }
                 // [START_EXCLUDE]
                 document.getElementById('quickstart-sign-in').disabled = false;
@@ -309,10 +319,7 @@
                 </nav>
 
             </div>
-
-            <p class="centeredtext" id="linktext">Sync links smoothly!</p>
-
-            <div class="centerdiv">
+            <div class="centerdiv" id="centerDiv">
 
                 <form action="#" onSubmit="return false;">
 
