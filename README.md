@@ -4,7 +4,7 @@ Sync web links with your PC and your (android) phone very smoothly!
 
 ## Usage
 
-Go to the web version: [NOT AVAILABLE YET]
+Go to the web version: [NOT AVAILABLE YET]  
 Install the Android App from the PlayStore : [NOT AVAILABLE YET]
 
 ## Contributing
