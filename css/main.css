@@ -8,14 +8,16 @@ p.centeredtext {
     transform: translate(-50%, -50%);
     font-size: 65px;
 }
+
 .centerdiv {
-    position: fixed;
+    position: absolute;
     top: 50%;
+    white-space: nowrap;
     left: 50%;
-    /* bring your own prefixes */
     transform: translate(-50%, -50%);
     font-size: 75px;
 }
+
 .loadinglink {
     position: fixed;
     top: 50%;
@@ -24,6 +26,7 @@ p.centeredtext {
     transform: translate(-50%, -50%);
     font-size: 75px;
 }
+
 p.loadingtext {
     color: #26A69A;
     text-align: center;
